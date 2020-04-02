@@ -17,8 +17,12 @@ public class MapAndJson implements AttributeConverter<Map<String,Object>,String>
 
     @Override
     public String convertToDatabaseColumn(Map<String, Object> stringObjectMap) {
-//        return mapper.writeValueAsString(stringObjectMap);
-        return null;
+        try{
+            return mapper.writeValueAsString(stringObjectMap);
+        }catch (Exception e){
+            return e.toString();
+        }
+
     }
 
     @Override
