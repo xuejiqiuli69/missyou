@@ -29,7 +29,7 @@ public class Sku extends BaseEntity{
     private Long spuId;
     private Long categoryId;
     private Long rootCategoryId;
-    private String specs;
+//    private String specs;
 
     @Convert(converter = MapAndJson.class)
     private Map<String,Object> test;
