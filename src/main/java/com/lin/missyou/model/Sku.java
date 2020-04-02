@@ -4,9 +4,11 @@
  */
 package com.lin.missyou.model;
 
+import com.lin.missyou.util.MapAndJson;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
@@ -29,7 +31,8 @@ public class Sku extends BaseEntity{
     private Long rootCategoryId;
     private String specs;
 
-//    private Map<String,Object> test;
+    @Convert(converter = MapAndJson.class)
+    private Map<String,Object> test;
     private String code;
     private Long stock;
 }
