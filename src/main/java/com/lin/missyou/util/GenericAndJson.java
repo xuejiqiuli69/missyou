@@ -1,6 +1,6 @@
 /**
  * @作者 leokkzhang
- * @创建时间 2020/4/3 21:32
+ * @创建时间 2020/4/4 0:44
  */
 package com.lin.missyou.util;
 
@@ -9,35 +9,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lin.missyou.exception.http.ServerErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
 import java.util.ArrayList;
-import java.util.List;
 
-@Converter
-public class ListAndJson implements AttributeConverter<List<Object>, String> {
+public class GenericAndJson {
+
+    private static ObjectMapper mapper;
 
     @Autowired
-    private ObjectMapper mapper;
+    public void setMapper(ObjectMapper mapper){
+        GenericAndJson.mapper = mapper;
+    }
 
-    @Override
-    public String convertToDatabaseColumn(List<Object> objects) {
+    public static <T> String objectToJson(T o){
         try {
-            return mapper.writeValueAsString(objects);
+            return mapper.writeValueAsString(o);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new ServerErrorException(9999);
         }
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Object> convertToEntityAttribute(String s) {
+    public static <T> T jsonToObject(String s, Class<T> classT) {
         if (s == null) {
             return null;
         }
         try {
-            return mapper.readValue(s, ArrayList.class);
+            return GenericAndJson.mapper.readValue(s, classT);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             throw new ServerErrorException(9999);
