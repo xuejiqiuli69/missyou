@@ -4,6 +4,7 @@
  */
 package com.lin.missyou.model;
 
+import com.lin.missyou.util.ListAndJson;
 import com.lin.missyou.util.MapAndJson;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,10 +30,12 @@ public class Sku extends BaseEntity{
     private Long spuId;
     private Long categoryId;
     private Long rootCategoryId;
-    private String specs;
 
-    @Convert(converter = MapAndJson.class)
-    private Map<String,Object> test;
+    @Convert(converter = ListAndJson.class)
+    private List<Object> specs;
+
+//    @Convert(converter = MapAndJson.class)
+//    private Map<String,Object> test;
     private String code;
     private Long stock;
 }
