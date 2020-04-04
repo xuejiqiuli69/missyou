@@ -4,6 +4,8 @@
  */
 package com.lin.missyou.model;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.lin.missyou.util.GenericAndJson;
 import com.lin.missyou.util.ListAndJson;
 import com.lin.missyou.util.MapAndJson;
 import lombok.Getter;
@@ -13,6 +15,7 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -31,11 +34,25 @@ public class Sku extends BaseEntity{
     private Long categoryId;
     private Long rootCategoryId;
 
-    @Convert(converter = ListAndJson.class)
-    private List<Object> specs;
+//    @Convert(converter = ListAndJson.class)
+    private String specs;
 
 //    @Convert(converter = MapAndJson.class)
 //    private Map<String,Object> test;
     private String code;
     private Long stock;
+
+    public List<Spec> getSpecs() {
+        if(this.specs == null){
+            return Collections.emptyList();
+        }
+        return GenericAndJson.jsonToObject(this.specs,new TypeReference<List<Spec>>(){});
+    }
+
+    public void setSpecs(List<Spec> specs) {
+        if(specs.isEmpty()){
+            return;
+        }
+        this.specs = GenericAndJson.objectToJson(specs);
+    }
 }
