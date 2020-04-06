@@ -1,6 +1,6 @@
 /**
  * @作者 leokkzhang
- * @创建时间 2020/4/6 13:40
+ * @创建时间 2020/4/6 20:08
  */
 package com.lin.missyou.model;
 
@@ -15,15 +15,12 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Where(clause = "delete_time is null")
-public class Category extends BaseEntity{
+public class GridCategory extends BaseEntity{
     @Id
     private Long id;
-    private String name;
-    private String description;
-    private Boolean isRoot;
-    private Long parentId;
+    private String title;
     private String img;
-    private Long index;
-    private Long online;
-    private Long level;
+    private String name;
+    private Long categoryId;
+    private Long rootCategoryId;
 }
