@@ -19,7 +19,7 @@ public class ThemeService {
     private ThemeRepository themeRepository;
 
 
-    public List<Theme> findByName(List<String> names) {
+    public List<Theme> findByNames(List<String> names) {
         return themeRepository.findByNames(names);
     }
 
