@@ -1,4 +1,4 @@
-package com.lin.missyou.validators;
+package com.lin.missyou.dto.validators;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -7,16 +7,15 @@ import java.lang.annotation.*;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-@Constraint(validatedBy = PasswordValidator.class)
-public @interface PasswordEqual {
-    int min() default 4;
+@Constraint(validatedBy = TokenPasswordValidator.class)
+public @interface TokenPassword {
+    int min() default 6;
 
-    int max() default 10;
+    int max() default 32;
 
-    String message() default "passwords are not equal";
+    String message() default "字段不符合要求";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
 }

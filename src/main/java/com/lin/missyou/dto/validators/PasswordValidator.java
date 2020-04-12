@@ -2,7 +2,7 @@
  * @作者 leokkzhang
  * @创建时间 2020/3/15 23:39
  */
-package com.lin.missyou.validators;
+package com.lin.missyou.dto.validators;
 
 import com.lin.missyou.dto.PersonDTO;
 

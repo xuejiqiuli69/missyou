@@ -18,7 +18,7 @@ public class OptionalTest {
         Optional<String> t2 = Optional.ofNullable(null);
 //        t1.get();
 //        empty.get();
-        String s = t2.get();
+//        String s = t2.get();
         String s1 = t2.orElse("moren");
     }
 }
