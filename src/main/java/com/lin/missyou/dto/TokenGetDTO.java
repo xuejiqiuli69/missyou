@@ -4,6 +4,7 @@
  */
 package com.lin.missyou.dto;
 
+import com.lin.missyou.core.enumeration.LoginType;
 import com.lin.missyou.dto.validators.TokenPassword;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,6 @@ public class TokenGetDTO {
     @TokenPassword(max=30, message = "{token.password}")
     private String password;
 
-//    private LoginType type;
+    private LoginType type;
 
 }

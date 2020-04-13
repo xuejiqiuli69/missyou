@@ -13,3 +13,8 @@ spring:
 missyou:
   api-package: com.lin.missyou.api
 
+wx:
+  appid: wx62200b81f8835d76
+  appsecret: 34cab6d3fe625855bb6cd9937c34e32c
+  code2session: https://api.weixin.qq.com/sns/jscode2session?appid={0}&secret={1}&js_code={2}&grant_type=authorization_code
+
