@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lin.missyou.exception.http.ParameterException;
 import com.lin.missyou.model.User;
 import com.lin.missyou.repository.UserRepository;
+import com.lin.missyou.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -57,13 +58,13 @@ public class WxAuthenticationService {
         }
         Optional<User> userOptional = userRepository.findByOpenid(openid);
         if (userOptional.isPresent()) {
-
-            return "";
+            return JwtToken.makeToken(userOptional.get().getId());
         }
         User user = User.builder()
                 .openid(openid)
                 .build();
         userRepository.save(user);
-        return "";
+        Long uid = user.getId();
+        return JwtToken.makeToken(uid);
     }
 }

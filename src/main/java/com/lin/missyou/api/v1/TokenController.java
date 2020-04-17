@@ -30,7 +30,7 @@ public class TokenController {
         String token = null;
         switch (userData.getType()){
             case USER_WX:
-                wxAuthenticationService.code2Session(userData.getAccount());
+                token = wxAuthenticationService.code2Session(userData.getAccount());
                 break;
             case USER_Email:
                 //留待自己写 注意加解密
@@ -38,6 +38,7 @@ public class TokenController {
             default:
                 throw new NotFoundException(10003);
         }
-        return null;
+        map.put("token",token);
+        return map;
     }
 }
