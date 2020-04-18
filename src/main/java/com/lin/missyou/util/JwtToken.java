@@ -35,16 +35,27 @@ public class JwtToken {
         JwtToken.expiredTimeIn = expiredTimeIn;
     }
 
-    public Optional<Map<String, Claim>> getClaims(String token){
+    public static Optional<Map<String, Claim>> getClaims(String token) {
         DecodedJWT decodedJWT;
         Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
         JWTVerifier jwtVerifier = JWT.require(algorithm).build();
         try {
             decodedJWT = jwtVerifier.verify(token);
-        }catch (JWTVerificationException e){
+        } catch (JWTVerificationException e) {
             return Optional.empty();
         }
         return Optional.of(decodedJWT.getClaims());
+    }
+
+    public static Boolean verifyToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            verifier.verify(token);
+        } catch (JWTVerificationException e) {
+            return false;
+        }
+        return true;
     }
 
     public static String makeToken(Long uid, Integer scope) {
