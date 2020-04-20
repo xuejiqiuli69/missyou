@@ -8,8 +8,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,4 +26,10 @@ public class Category extends BaseEntity{
     private Long index;
     private Long online;
     private Long level;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "coupon_category",
+            joinColumns = @JoinColumn(name = "category_id"),
+            inverseJoinColumns = @JoinColumn(name = "coupon_id"))
+    private List<Coupon> couponList;
 }
