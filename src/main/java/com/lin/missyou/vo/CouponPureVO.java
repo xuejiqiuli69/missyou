@@ -10,7 +10,10 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -31,5 +34,11 @@ public class CouponPureVO {
 
     public CouponPureVO(Coupon coupon) {
         BeanUtils.copyProperties(coupon, this);
+    }
+
+    public static List<CouponPureVO> getList(List<Coupon> couponList){
+        return couponList.stream()
+                .map(CouponPureVO::new)
+                .collect(Collectors.toList());
     }
 }
