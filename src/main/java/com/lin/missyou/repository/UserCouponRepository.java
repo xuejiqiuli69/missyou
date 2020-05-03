@@ -1,0 +1,14 @@
+/**
+ * @作者 leokkzhang
+ * @创建时间 2020/5/3 14:57
+ */
+package com.lin.missyou.repository;
+
+import com.lin.missyou.model.UserCoupon;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface UserCouponRepository extends JpaRepository<UserCoupon, Long> {
+    Optional<UserCoupon> findFirstByUserIdAndAndCouponId(Long uid, Long couponId);
+}

@@ -4,8 +4,11 @@
  */
 package com.lin.missyou.api.v1;
 
+import com.lin.missyou.core.LocalUser;
 import com.lin.missyou.core.interceptors.ScopeLevel;
+import com.lin.missyou.exception.CreateSuccess;
 import com.lin.missyou.model.Coupon;
+import com.lin.missyou.model.User;
 import com.lin.missyou.service.CouponService;
 import com.lin.missyou.util.ListAndJson;
 import com.lin.missyou.vo.CouponPureVO;
@@ -34,7 +37,7 @@ public class CouponController {
     }
 
     @GetMapping("/whole_store")
-    public List<CouponPureVO> getWholeStoreCouponList(){
+    public List<CouponPureVO> getWholeStoreCouponList() {
         List<Coupon> coupons = couponService.getWholeStoreCoupons();
         if (coupons.isEmpty()) {
             return Collections.emptyList();
@@ -44,7 +47,9 @@ public class CouponController {
 
     @ScopeLevel
     @PostMapping("/collect/{id}")
-    public void collectCoupon(@PathVariable Long id){
-
+    public void collectCoupon(@PathVariable Long id) {
+        Long uid = LocalUser.getUser().getId();
+        couponService.collectOneCoupon(uid, id);
+        throw new CreateSuccess(0);
     }
 }
