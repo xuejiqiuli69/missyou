@@ -1,5 +1,7 @@
 package com.lin.missyou.core.enumeration;
 
+import java.util.stream.Stream;
+
 public enum CouponStatus {
 
     AVAILABLE(1,"可以使用,未过期"),
@@ -10,6 +12,13 @@ public enum CouponStatus {
 
     public Integer getValue() {
         return value;
+    }
+
+    public static CouponStatus toType(Integer value) {
+        return Stream.of(CouponStatus.values())
+                .filter(c -> c.getValue() == value)
+                .findAny()
+                .orElse(null);
     }
 
     CouponStatus(Integer value, String description){
