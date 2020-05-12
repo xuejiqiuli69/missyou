@@ -55,4 +55,8 @@ public class Sku extends BaseEntity{
         }
         this.specs = GenericAndJson.objectToJson(specs);
     }
+
+    public BigDecimal getAutualPrice(){
+        return this.discountPrice == null ? this.price : this.discountPrice;
+    }
 }

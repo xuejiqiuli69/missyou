@@ -25,5 +25,6 @@ public class OrderController {
         Long uid = LocalUser.getUser().getId();
         //orderchecker
         //couponchecker
+        return new OrderIdVO();
     }
 }
