@@ -16,3 +16,6 @@ missyou:
   security:
     jwt-key: leokkzhang
     token-expired-in: 86400000
+  order:
+    max-sku-limit: 777
+    pay-time-limt: 3600

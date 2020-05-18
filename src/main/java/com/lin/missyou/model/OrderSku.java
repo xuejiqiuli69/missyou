@@ -1,0 +1,37 @@
+/**
+ * @作者 leokkzhang
+ * @创建时间 2020/5/18 22:12
+ */
+package com.lin.missyou.model;
+
+import com.lin.missyou.dto.SkuInfoDTO;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Getter
+@Setter
+public class OrderSku {
+    private Long id;
+    private Long spuId;
+    private BigDecimal finalPrice;
+    //一个sku的单价
+    private BigDecimal singlePrice;
+    private List<String> specValues;
+    private Integer count;
+    private String img;
+    private String title;
+
+    public OrderSku(Sku sku, SkuInfoDTO skuInfoDTO) {
+        this.id = sku.getId();
+        this.spuId = sku.getSpuId();
+        this.singlePrice = sku.getAutualPrice();
+        this.finalPrice = sku.getAutualPrice().multiply(new BigDecimal(skuInfoDTO.getCount()));
+        this.count = skuInfoDTO.getCount();
+        this.img = sku.getImg();
+        this.title = sku.getTitle();
+        this.specValues = sku.getSpecValueList();
+    }
+}

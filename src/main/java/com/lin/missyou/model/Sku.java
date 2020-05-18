@@ -4,12 +4,14 @@
  */
 package com.lin.missyou.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.lin.missyou.util.GenericAndJson;
 import com.lin.missyou.util.ListAndJson;
 import com.lin.missyou.util.MapAndJson;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -18,10 +20,12 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
 @Setter
+@Where(clause = "delete_time is null and online = 1")
 public class Sku extends BaseEntity{
     @Id
     private Long id;
@@ -58,5 +62,12 @@ public class Sku extends BaseEntity{
 
     public BigDecimal getAutualPrice(){
         return this.discountPrice == null ? this.price : this.discountPrice;
+    }
+
+    @JsonIgnore
+    public List<String> getSpecValueList(){
+        return this.getSpecs().stream()
+                .map(Spec::getValue)
+                .collect(Collectors.toList());
     }
 }
