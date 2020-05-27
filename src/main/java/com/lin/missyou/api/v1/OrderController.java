@@ -32,6 +32,7 @@ public class OrderController {
         //校验订单
         OrderChecker orderChecker = orderService.isOk(uid, orderDTO);
         //下单
-        return new OrderIdVO();
+        Long oid = orderService.placeOrder(uid,orderDTO,orderChecker);
+        return new OrderIdVO(oid);
     }
 }

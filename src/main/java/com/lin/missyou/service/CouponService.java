@@ -60,7 +60,7 @@ public class CouponService {
         }
         //验证用户是否已经领取过优惠券(不能重复领取)
         userCouponRepository
-                .findFirstByUserIdAndAndCouponId(uid, couponId)
+                .findFirstByUserIdAndCouponId(uid, couponId)
                 .ifPresent(uc ->{throw new ParameterException(40006);});
         //将用户领取的优惠券记录到对应的关系映射表中
         UserCoupon userCouponNew = UserCoupon.builder()

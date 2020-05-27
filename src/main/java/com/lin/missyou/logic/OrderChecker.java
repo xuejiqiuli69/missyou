@@ -75,7 +75,7 @@ public class OrderChecker {
             beyondSkuStock(sku, skuInfoDTO);
             beyondMaxSkuLimit(skuInfoDTO);
 
-            serverTotalPrice.add(calculateServerTotalPrice(sku, skuInfoDTO));
+            serverTotalPrice = serverTotalPrice.add(calculateServerTotalPrice(sku, skuInfoDTO));
             skuOrderBOList.add(new SkuOrderBO(sku, skuInfoDTO));
             orderSkuList.add(new OrderSku(sku, skuInfoDTO));
         }

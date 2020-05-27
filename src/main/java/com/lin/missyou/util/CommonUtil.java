@@ -6,6 +6,7 @@ package com.lin.missyou.util;
 
 import com.lin.missyou.bo.PageCounter;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class CommonUtil {
@@ -24,5 +25,10 @@ public class CommonUtil {
         Long startTime = start.getTime();
         Long endTime = end.getTime();
         return time > startTime && time < endTime;
+    }
+
+    public static Calendar addSomeSeconds(Calendar calendar,int seconds){
+        calendar.add(Calendar.SECOND,seconds);
+        return calendar;
     }
 }
