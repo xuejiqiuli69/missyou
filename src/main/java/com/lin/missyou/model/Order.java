@@ -47,6 +47,7 @@ public class Order extends BaseEntity{
     private Integer status;
 
     private Date expiredTime;
+    private Date placeTime;//真正的下单时间
 
     public OrderAddressDTO getSnapAddress(){
         if(this.snapAddress == null){
