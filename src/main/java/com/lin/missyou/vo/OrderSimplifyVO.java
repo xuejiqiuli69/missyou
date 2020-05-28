@@ -19,10 +19,9 @@ public class OrderSimplifyVO {
     private Long totalCount;
     private String snapImg;
     private String snapTitle;
-    private String snapItems;
     private BigDecimal finalTotalPrice;
     private Integer status;
     private Date expiredTime;
     private Date placeTime;
-    private Long period;//倒计时时长
+    private Long period;
 }
