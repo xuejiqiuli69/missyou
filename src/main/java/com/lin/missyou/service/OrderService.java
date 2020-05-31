@@ -34,6 +34,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,6 +106,23 @@ public class OrderService {
         Date now = new Date();
         return orderRepository.findByExpiredTimeGreaterThanAndUserIdAndStatus(now, uid, OrderStatus.UNPAID.value(), pageable);
     }
+
+    public Page<Order> getByStatus(Integer status, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Long uid = LocalUser.getUser().getId();
+        if (status == OrderStatus.All.value()) {
+            return orderRepository.findByUserId(uid, pageable);
+        }
+        return orderRepository.findByUserIdAndStatus(uid, status, pageable);
+    }
+
+    public Optional<Order> getOrderDetail(Long oid) {
+        Long uid = LocalUser.getUser().getId();
+        return orderRepository.findFirstByUserIdAndId(uid, oid);
+    }
+
+
+
 
 
     private void writeOffCoupon(Long couponId, Long oid, Long uid) {
