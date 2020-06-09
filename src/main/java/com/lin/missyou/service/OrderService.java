@@ -27,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +36,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,11 +60,15 @@ public class OrderService {
     @Autowired
     private IMoneyDiscount iMoneyDiscount;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     @Value("${missyou.order.max-sku-limit}")
     private int maxSkuLimit;
 
     @Value("${missyou.order.pay-time-limit}")
     private Integer payTimeLimit;
+
 
 
     @Transactional
@@ -71,7 +77,7 @@ public class OrderService {
         String orderNo = OrderUtil.makeOrderNo();
         Calendar now = Calendar.getInstance();
         Calendar now1 = (Calendar) now.clone();
-        Date expiredTime = CommonUtil.addSomeSeconds(now,payTimeLimit).getTime();
+        Date expiredTime = CommonUtil.addSomeSeconds(now, payTimeLimit).getTime();
 
         Order order = Order.builder()
                 .orderNo(orderNo)
@@ -92,11 +98,25 @@ public class OrderService {
         //reduceStock
         reduceStock(orderChecker);
         //核销优惠券
-        if(orderDTO.getCouponId() != null){
-            this.writeOffCoupon(orderDTO.getCouponId(),order.getId(),uid);
+        Long couponId = -1L;
+        if (orderDTO.getCouponId() != null) {
+            this.writeOffCoupon(orderDTO.getCouponId(), order.getId(), uid);
+            couponId = orderDTO.getCouponId();
         }
         //加入延迟消息队列
+
+        sendToRedis(order.getId(), uid, couponId);
         return order.getId();
+    }
+
+    private void sendToRedis(Long oid, Long uid, Long couponId) {
+        String key = oid.toString() + "," + uid.toString() + "," + couponId.toString();
+        try {
+            stringRedisTemplate.opsForValue().set(key,"1",payTimeLimit, TimeUnit.SECONDS);
+        }catch (Exception e){
+            //不抛出异常 否则使下单事务失败 而使用邮件短信的通知机制通知指定人员
+            e.printStackTrace();
+        }
     }
 
 
@@ -122,7 +142,14 @@ public class OrderService {
     }
 
 
-
+    public void updateOrderPrepayId(Long orderId, String prepayId) {
+        Optional<Order> order = orderRepository.findById(orderId);
+        order.ifPresent(o -> {
+            o.setPrepayId(prepayId);
+            orderRepository.save(o);
+        });
+        order.orElseThrow(() -> new ParameterException(10007));
+    }
 
 
     private void writeOffCoupon(Long couponId, Long oid, Long uid) {
